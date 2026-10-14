@@ -1,0 +1,32 @@
+[
+  {
+    "station_id": "8726520",
+    "target_year": 2016,
+    "purpose": "target_final_fit",
+    "rows": 8688,
+    "first_origin": "2016-01-02 00:00:00",
+    "last_origin": "2016-12-28 23:00:00",
+    "last_72h_target": "2016-12-31 23:00:00",
+    "target_boundary_exclusive": "2017-01-01 00:00:00"
+  },
+  {
+    "station_id": "8726520",
+    "target_year": 2016,
+    "purpose": "target_inner_fit",
+    "rows": 6480,
+    "first_origin": "2016-01-02 00:00:00",
+    "last_origin": "2016-09-27 23:00:00",
+    "last_72h_target": "2016-09-30 23:00:00",
+    "target_boundary_exclusive": "2016-10-01 00:00:00"
+  },
+  {
+    "station_id": "8726520",
+    "target_year": 2016,
+    "purpose": "target_validation",
+    "rows": 2136,
+    "first_origin": "2016-10-01 00:00:00",
+    "last_origin": "2016-12-28 23:00:00",
+    "last_72h_target": "2016-12-31 23:00:00",
+    "target_boundary_exclusive": "2017-01-01 00:00:00"
+  }
+]

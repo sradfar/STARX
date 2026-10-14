@@ -1,0 +1,242 @@
+[
+  {
+    "id": "source_8771450",
+    "kind": "source",
+    "target_id": "8771450",
+    "year": null,
+    "source_id": "8771450",
+    "conversion_max_error_m": 7.450580596923828e-09
+  },
+  {
+    "id": "local_2016_8771450",
+    "kind": "local",
+    "target_id": "8771450",
+    "year": 2016,
+    "source_id": null,
+    "conversion_max_error_m": 1.4901161193847656e-08
+  },
+  {
+    "id": "adapted_2016_8771450",
+    "kind": "adapted",
+    "target_id": "8771450",
+    "year": 2016,
+    "source_id": "8534720",
+    "conversion_max_error_m": 1.4901161193847656e-08
+  },
+  {
+    "id": "local_2018_8771450",
+    "kind": "local",
+    "target_id": "8771450",
+    "year": 2018,
+    "source_id": null,
+    "conversion_max_error_m": 1.4901161193847656e-08
+  },
+  {
+    "id": "adapted_2018_8771450",
+    "kind": "adapted",
+    "target_id": "8771450",
+    "year": 2018,
+    "source_id": "8534720",
+    "conversion_max_error_m": 7.450580596923828e-09
+  },
+  {
+    "id": "source_8638610",
+    "kind": "source",
+    "target_id": "8638610",
+    "year": null,
+    "source_id": "8638610",
+    "conversion_max_error_m": 7.450580596923828e-09
+  },
+  {
+    "id": "local_2016_8638610",
+    "kind": "local",
+    "target_id": "8638610",
+    "year": 2016,
+    "source_id": null,
+    "conversion_max_error_m": 1.4901161193847656e-08
+  },
+  {
+    "id": "adapted_2016_8638610",
+    "kind": "adapted",
+    "target_id": "8638610",
+    "year": 2016,
+    "source_id": "8443970",
+    "conversion_max_error_m": 7.450580596923828e-09
+  },
+  {
+    "id": "local_2018_8638610",
+    "kind": "local",
+    "target_id": "8638610",
+    "year": 2018,
+    "source_id": null,
+    "conversion_max_error_m": 1.4901161193847656e-08
+  },
+  {
+    "id": "adapted_2018_8638610",
+    "kind": "adapted",
+    "target_id": "8638610",
+    "year": 2018,
+    "source_id": "8534720",
+    "conversion_max_error_m": 7.450580596923828e-09
+  },
+  {
+    "id": "source_8518750",
+    "kind": "source",
+    "target_id": "8518750",
+    "year": null,
+    "source_id": "8518750",
+    "conversion_max_error_m": 7.450580596923828e-09
+  },
+  {
+    "id": "local_2016_8518750",
+    "kind": "local",
+    "target_id": "8518750",
+    "year": 2016,
+    "source_id": null,
+    "conversion_max_error_m": 7.450580596923828e-09
+  },
+  {
+    "id": "adapted_2016_8518750",
+    "kind": "adapted",
+    "target_id": "8518750",
+    "year": 2016,
+    "source_id": "8534720",
+    "conversion_max_error_m": 7.450580596923828e-09
+  },
+  {
+    "id": "local_2018_8518750",
+    "kind": "local",
+    "target_id": "8518750",
+    "year": 2018,
+    "source_id": null,
+    "conversion_max_error_m": 1.4901161193847656e-08
+  },
+  {
+    "id": "adapted_2018_8518750",
+    "kind": "adapted",
+    "target_id": "8518750",
+    "year": 2018,
+    "source_id": "8534720",
+    "conversion_max_error_m": 1.4901161193847656e-08
+  },
+  {
+    "id": "source_8443970",
+    "kind": "source",
+    "target_id": "8443970",
+    "year": null,
+    "source_id": "8443970",
+    "conversion_max_error_m": 3.725290298461914e-09
+  },
+  {
+    "id": "local_2016_8443970",
+    "kind": "local",
+    "target_id": "8443970",
+    "year": 2016,
+    "source_id": null,
+    "conversion_max_error_m": 7.450580596923828e-09
+  },
+  {
+    "id": "adapted_2016_8443970",
+    "kind": "adapted",
+    "target_id": "8443970",
+    "year": 2016,
+    "source_id": "8534720",
+    "conversion_max_error_m": 1.4901161193847656e-08
+  },
+  {
+    "id": "local_2018_8443970",
+    "kind": "local",
+    "target_id": "8443970",
+    "year": 2018,
+    "source_id": null,
+    "conversion_max_error_m": 1.4901161193847656e-08
+  },
+  {
+    "id": "adapted_2018_8443970",
+    "kind": "adapted",
+    "target_id": "8443970",
+    "year": 2018,
+    "source_id": "8534720",
+    "conversion_max_error_m": 1.4901161193847656e-08
+  },
+  {
+    "id": "source_8534720",
+    "kind": "source",
+    "target_id": "8534720",
+    "year": null,
+    "source_id": "8534720",
+    "conversion_max_error_m": 7.450580596923828e-09
+  },
+  {
+    "id": "local_2016_8534720",
+    "kind": "local",
+    "target_id": "8534720",
+    "year": 2016,
+    "source_id": null,
+    "conversion_max_error_m": 7.450580596923828e-09
+  },
+  {
+    "id": "adapted_2016_8534720",
+    "kind": "adapted",
+    "target_id": "8534720",
+    "year": 2016,
+    "source_id": "8443970",
+    "conversion_max_error_m": 7.450580596923828e-09
+  },
+  {
+    "id": "local_2018_8534720",
+    "kind": "local",
+    "target_id": "8534720",
+    "year": 2018,
+    "source_id": null,
+    "conversion_max_error_m": 1.4901161193847656e-08
+  },
+  {
+    "id": "adapted_2018_8534720",
+    "kind": "adapted",
+    "target_id": "8534720",
+    "year": 2018,
+    "source_id": "8443970",
+    "conversion_max_error_m": 3.725290298461914e-09
+  },
+  {
+    "id": "source_8726520",
+    "kind": "source",
+    "target_id": "8726520",
+    "year": null,
+    "source_id": "8726520",
+    "conversion_max_error_m": 7.450580596923828e-09
+  },
+  {
+    "id": "local_2016_8726520",
+    "kind": "local",
+    "target_id": "8726520",
+    "year": 2016,
+    "source_id": null,
+    "conversion_max_error_m": 0.0
+  },
+  {
+    "id": "adapted_2016_8726520",
+    "kind": "adapted",
+    "target_id": "8726520",
+    "year": 2016,
+    "source_id": "8771450",
+    "conversion_max_error_m": 1.4901161193847656e-08
+  },
+  {
+    "id": "local_2018_8726520",
+    "kind": "local",
+    "target_id": "8726520",
+    "year": 2018,
+    "source_id": null,
+    "conversion_max_error_m": 1.4901161193847656e-08
+  },
+  {
+    "id": "adapted_2018_8726520",
+    "kind": "adapted",
+    "target_id": "8726520",
+    "year": 2018,
+    "source_id": "8771450",
+    "conversion_max_error_m": 1.4901161193847656e-08
+  }
+]

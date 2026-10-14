@@ -1,0 +1,16 @@
+{
+  "target_year": 2018,
+  "target_id": "8443970",
+  "local": {
+    "validation_rmse_m": 0.11834068979055994,
+    "candidate": "source_style_depth5",
+    "rounds": 200
+  },
+  "adapted": {
+    "validation_rmse_m": 0.10125484421984927,
+    "source_id": "8534720",
+    "rounds": 100
+  },
+  "selection_criterion": "mean original-scale RMSE across five forecast leads",
+  "choices_frozen_before_test_read": true
+}

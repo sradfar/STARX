@@ -1,0 +1,37 @@
+[
+  {
+    "number": 2,
+    "file": "figure_2.png",
+    "caption": "Figure 2. Six-gauge study domain and long-record local forecasting model input distributions. Locations of the six NOAA tide gauges spanning the Gulf and East Coasts of the United States. Each gauge is connected to an inset summarizing the standardized predictor groups supplied to its long-record local model. Observed-history groups (-h) pool the hourly predictors from 24 h before forecast initialization through initialization, whereas future-forcing groups (-f) pool predictors from 1 to 72 h after initialization. Wind-direction groups combine their sine and cosine components, and the seasonal group combines the two month-based sine and cosine predictors. Circles indicate medians, thick intervals indicate the interquartile range, and thin intervals indicate the 5th\u201395th percentile range. Inset borders and gauge markers use matching station colors."
+  },
+  {
+    "number": 3,
+    "file": "figure_3.png",
+    "caption": "Figure 3. Long-record local performance and direct-transfer skill retention. (a) RMSE by station and forecast lead. (b) Median transfer skill retention (TSR) across the five forecast horizons for every directed source-to-target pair. Colors apply the proposed classification rule: unstable or negative transfer; weak transfer with positive TSR at every horizon; transferable performance with median TSR \u2265 0.50 and positive TSR at every horizon; and strong transfer with median TSR \u2265 0.75 and positive TSR at every horizon. Diagonal cells denote local models. (c) Mean local and zero-shot RMSE by forecast horizon; error bars show between-case standard deviations. (d) Distributions of the zero-shot RMSE penalty across the 30 directed transfers at each horizon. Zero-shot prediction is a reference baseline."
+  },
+  {
+    "number": 4,
+    "file": "figure_4.png",
+    "caption": "Figure 4. Validation-selected adaptation compared with local-only training under matched target-data budgets. (a) Mean RMSE across forecast leads for models selected within the 2016 target record; error bars show between-station standard deviations, and the long-record local model provides a reference. (b) Station-level overall RMSE gain from adaptation in the 2016 and 2018 experiments, averaged across five leads. Gain is 100 times (local RMSE minus adapted RMSE) divided by local RMSE. (c) Mean RMSE during observations at or above the station- and lead-specific pre-test 95th percentile. (d) Mean warning F1 at the same threshold. Both short-record strategies select their settings within the designated target year and refit on identical observations; all evaluations use common 2020-2025 target origins. Panels c and d average six targets and five forecast leads. Supplementary Tables S5-S7 report settings and station-level results."
+  },
+  {
+    "number": 5,
+    "file": "figure_5.png",
+    "caption": "Figure 5. Station-specific physical attribution patterns across forecast horizons. Mean absolute contribution of nine physical predictor groups to the six long-record local models at 6-, 12-, 24-, 48- and 72-h forecast horizons for (a) Galveston, (b) Sewells Point, (c) The Battery, (d) Boston, (e) Atlantic City and (f) St. Petersburg. Signed feature-level SHAP contributions are first summed within each physical group for every sample, after which their absolute magnitudes are averaged. Contributions are expressed in meters of predicted surge. Past variables cover t-24 h through t; future variables cover t+1 h through t+72 h. The profiles describe fitted-model behavior."
+  },
+  {
+    "number": 6,
+    "file": "figure_6.png",
+    "caption": "Figure 6. Environmental separation, directional asymmetry and attribution diagnostics of model transfer. (a) Source\u2013target environmental distance versus lead-averaged zero-shot RMSE penalty. Colored points represent directed transfers, gray connectors link reciprocal directions, and diamonds indicate reciprocal-pair means. Fitted relationships and Pearson correlations are shown for the 30 directed transfers and 15 reciprocal-pair means. (b) Reciprocal station pairs, ordered by decreasing absolute directional difference. For each row labeled A / B, circles show A-to-B transfer and diamonds show B-to-A transfer; colors identify the source-to-target coastal groups, consistently across panels. Gray segments connect the two lead-averaged penalties, and segment length measures their absolute difference. The mean absolute directional difference across the 15 pairs is 0.032 m. Station codes are GAL, Galveston; SEW, Sewells Point; BAT, The Battery; BOS, Boston; ATL, Atlantic City; and STP, St. Petersburg. (c) Total-variation distance between the zero-shot and target long-record local attribution profiles versus the RMSE penalty. (d) Reduction in attribution distance following one-year adaptation versus RMSE recovery. Points in panels c and d represent 30 directed station pairs averaged across five forecast horizons."
+  },
+  {
+    "number": 7,
+    "file": "figure_7.png",
+    "caption": "Figure 7. Station-dependent effects of adding tidal phase and geographic predictors. Cells show the mean percentage RMSE gain across five forecast leads at each held-out station in pooled leave-one-station-out experiments. Tidal phase adds explicit phase predictors; local depth adds ETOPO water depth; shelf geometry adds phase, shelf width, and nearshore slope; all static adds phase, shelf width, nearshore slope, shelter distance, and mean tidal range. Gain is 100 x (pooled-primary RMSE minus extended-model RMSE) divided by pooled-primary RMSE, computed separately for each station-lead case. Positive values indicate lower RMSE. The mean row averages all 30 cases equally, and the final row counts cases with positive gain. Detailed lead-resolved results are in Supplementary Figures S11-S12; station-level RMSE and diagnostic results are in Supplementary Table S4."
+  },
+  {
+    "number": 8,
+    "file": "figure_8.png",
+    "caption": "Figure 8. Effects of geographic inputs under different environmental conditions. (a) Mean RMSE improvement obtained using the actual station descriptors and the best fixed counterfactual setting supported by values from the training stations. Open markers show results using the actual descriptors, filled markers show the selected counterfactual setting, and connecting lines show the corresponding change. (b) Changes in absolute bias and residual error variability for each geographic extension relative to the pooled primary model; positive values indicate improvement. (c) Fractions of 120 overlapping condition\u2013lead combinations classified as consistently negative, consistently positive, or uncertain according to whether their bootstrap interval lies entirely below zero, entirely above zero, or spans zero. (d) Responses under different wind-direction sectors for selected station\u2013experiment combinations. Lines show mean improvement across the five forecast horizons and envelopes show the range across forecast leads. The counterfactual and condition-based analyses describe how the fitted models respond to geographic inputs and should not be interpreted as simulations of altered coastal physics."
+  }
+]

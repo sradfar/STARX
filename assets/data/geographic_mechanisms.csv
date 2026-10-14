@@ -1,0 +1,19 @@
+Experiment,Target,Primary RMSE (m),Extended RMSE (m),Gain (%),Bias reduction (m),Residual SD reduction (m),CF setting,Type,Source profile,Features changed,CF RMSE (m),CF gain vs extended (%),CF gain vs Primary (%),Negative cells,Positive cells,Uncertain cells
+Local depth,Boston,0.143,0.125,12.283,0.005,0.016,Local depth: source-range clip,Single feature,Atlantic City,Local depth,0.125,0.000,12.265,2,113,5
+Local depth,The Battery,0.113,0.117,-3.099,-0.025,0.001,Local depth: source minimum,Single feature,Boston,Local depth,0.111,5.108,1.728,68,34,18
+Local depth,Atlantic City,0.100,0.096,3.709,0.003,0.003,Clip to source range,All features,Boston,Local depth,0.096,0.000,3.984,10,69,41
+Local depth,Sewells Point,0.116,0.130,-10.555,-0.004,-0.013,Atlantic City profile,Station profile,Atlantic City,Local depth,0.105,19.219,9.598,102,7,11
+Local depth,St. Petersburg,0.124,0.130,-5.015,-0.018,-0.003,Galveston profile,Station profile,Galveston,Local depth,0.119,8.671,4.209,71,28,21
+Local depth,Galveston,0.101,0.111,-8.899,0.000,-0.010,Local depth: source minimum,Single feature,Boston,Local depth,0.097,12.213,4.030,61,23,36
+Shelf geometry,Boston,0.143,0.136,5.160,-0.005,0.009,Atlantic City profile,Station profile,Atlantic City,Shelf width; Nearshore slope,0.118,12.835,17.102,5,99,16
+Shelf geometry,The Battery,0.113,0.121,-6.438,-0.017,-0.005,Atlantic City profile,Station profile,Atlantic City,Shelf width; Nearshore slope,0.111,7.982,1.549,88,17,15
+Shelf geometry,Atlantic City,0.100,0.103,-2.288,-0.015,0.002,Boston profile,Station profile,Boston,Shelf width; Nearshore slope,0.093,10.152,7.502,49,32,39
+Shelf geometry,Sewells Point,0.116,0.097,14.645,0.010,0.016,Clip to source range,All features,Atlantic City,Nearshore slope,0.097,0.000,15.898,0,117,3
+Shelf geometry,St. Petersburg,0.124,0.142,-13.802,-0.000,-0.018,Shelf width: source minimum,Single feature,Galveston,Shelf width,0.113,20.383,8.837,107,9,4
+Shelf geometry,Galveston,0.101,0.104,-2.682,0.001,-0.003,Shelf width: source minimum,Single feature,St. Petersburg,Shelf width,0.101,2.076,-0.312,39,41,40
+All static,Boston,0.143,0.142,1.013,-0.013,0.005,Atlantic City profile,Station profile,Atlantic City,Shelf width; Nearshore slope; Shelter; Tidal range,0.118,16.756,17.374,32,47,41
+All static,The Battery,0.113,0.117,-3.576,-0.013,-0.003,Boston profile,Station profile,Boston,Shelf width; Nearshore slope; Shelter; Tidal range,0.111,5.705,1.901,80,25,15
+All static,Atlantic City,0.100,0.104,-3.445,-0.009,-0.001,Boston profile,Station profile,Boston,Shelf width; Nearshore slope; Shelter; Tidal range,0.094,9.583,6.233,49,11,60
+All static,Sewells Point,0.116,0.107,6.961,0.001,0.009,Atlantic City profile,Station profile,Atlantic City,Shelf width; Nearshore slope; Shelter; Tidal range,0.097,9.176,16.365,6,100,14
+All static,St. Petersburg,0.124,0.144,-14.695,-0.002,-0.019,Galveston profile,Station profile,Galveston,Shelf width; Nearshore slope; Shelter; Tidal range,0.116,19.556,6.931,106,6,8
+All static,Galveston,0.101,0.103,-1.859,-0.001,-0.001,Shelter: source maximum,Single feature,St. Petersburg,Shelter,0.101,1.686,0.191,38,44,38

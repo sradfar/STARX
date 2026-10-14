@@ -1,0 +1,28 @@
+{
+  "source_id": "8534720",
+  "target_id": "8443970",
+  "source_name": "Atlantic City",
+  "target_name": "Boston",
+  "added_rounds": 100,
+  "observed_peak_m": 1.2422000169754028,
+  "observed_peak_time_utc": "02 February 2021, 05:00 UTC",
+  "forecasts_at_observed_peak": {
+    "zero_shot": 0.7168490290641785,
+    "adapted": 0.9869816899299622,
+    "local": 0.8389729857444763,
+    "full_local": 1.1842701435089111
+  },
+  "trace_rmse_m": {
+    "zero_shot": 0.2369065135717392,
+    "adapted": 0.10530754178762436,
+    "local": 0.2130058854818344,
+    "full_local": 0.08014090359210968
+  },
+  "added_component_at_observed_peak_m": 0.2701326608657837,
+  "test_rmse24_m": {
+    "zero_shot": 0.12962394952774048,
+    "adapted": 0.076107457280159,
+    "local": 0.08918974548578262,
+    "full_local": 0.06680945307016373
+  }
+}
