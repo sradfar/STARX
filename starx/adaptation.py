@@ -61,19 +61,6 @@ def split_record(frame, start, end, cutoff):
     return full, train, valid
 
 
-def objective(pred, dm):
-    eps = dm.get_label() - pred
-    under = eps >= 0
-    tau1, tau2, w1, w2 = .8, .7, .5, .5
-    grad_phi1 = np.where(under, -tau1, 1.0-tau1)
-    grad_phi2 = np.where(under, -2.0*tau2*eps, -2.0*(1.0-tau2)*eps)
-    hess_phi2 = np.where(under, 2.0*tau2, 2.0*(1.0-tau2))
-    grad = w1*grad_phi1+w2*grad_phi2
-    hess = w1*1e-4+w2*hess_phi2
-    # Match the manuscript implementation's custom objective exactly.
-    return grad.astype(np.float32), hess.astype(np.float32)
-
-
 def sklearn_objective(y_true, y_pred, sample_weight=None):
     eps = y_true-y_pred
     under = eps >= 0
@@ -107,6 +94,15 @@ def fit_model(schema, frame, rounds, params=None, source=None, threads=2):
     scaled_X /= np.asarray(meta['x_scale'], dtype=np.float32)
     scaled_y -= np.asarray(meta['y_mean'], dtype=np.float32)
     scaled_y /= np.asarray(meta['y_scale'], dtype=np.float32)
+    if 'sample_weight' in frame:
+        weights = frame.sample_weight.to_numpy(np.float32, copy=True)
+        weights[~np.isfinite(weights) | (weights <= 0)] = 1.
+    else:
+        # Same capped exponential peak-surge weighting as the feature builder.
+        peak = np.maximum(y.max(axis=1), 0.)
+        weights = np.exp(np.minimum(3.*peak, np.log(50.))).astype(np.float32)
+        weights = np.clip(weights, .2, 50.)
+    weights /= weights.mean()
     parameters = {**meta['parameters'], 'tree_method': 'hist', 'random_state': 42, 'n_jobs': threads,
                   'objective': sklearn_objective, 'verbosity': 0, 'n_estimators': int(rounds)}
     boosters = []
@@ -119,7 +115,7 @@ def fit_model(schema, frame, rounds, params=None, source=None, threads=2):
             warm.set_param({'seed': 0, 'random_state': 0, 'nthread': threads})
             warm.predict(xgb.DMatrix(scaled_X[:1]))
         estimator = xgb.XGBRegressor(**parameters)
-        estimator.fit(scaled_X, scaled_y[:, i], verbose=False,
+        estimator.fit(scaled_X, scaled_y[:, i], sample_weight=weights, verbose=False,
                       xgb_model=warm)
         boosters.append(estimator.get_booster())
     meta['rounds'] = [b.num_boosted_rounds() for b in boosters]

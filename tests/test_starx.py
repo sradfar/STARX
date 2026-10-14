@@ -109,6 +109,21 @@ class ModelAndDataTests(unittest.TestCase):
 
 
 class AppTests(unittest.TestCase):
+    def test_local_activation_and_rollback_keep_strategy_labels(self):
+        from streamlit.testing.v1 import AppTest
+        app = AppTest.from_file(str(ROOT/'app.py'), default_timeout=60).run()
+        app.session_state['active_8771450'] = load_model('local_2016_8771450')
+        app.session_state['active_strategy_8771450'] = 'Local-only'
+        app.session_state['previous_models'] = {'8771450': load_model('adapted_2016_8771450')}
+        app.run()
+        self.assertTrue(any('Your updated local-only model' in c.value for c in app.caption))
+        app.radio(key='workspace').set_value('Verify & monitor').run()
+        rollback = next(b for b in app.button if b.label == 'Roll back to the previous model')
+        rollback.click().run()
+        self.assertFalse(list(app.exception), str(app.exception))
+        self.assertEqual(app.session_state['active_strategy_8771450'], 'Adapted')
+        self.assertEqual(app.session_state['active_8771450'].meta['kind'], 'adapted')
+
     def test_every_page_renders(self):
         from streamlit.testing.v1 import AppTest
         app = AppTest.from_file(str(ROOT/'app.py'), default_timeout=60).run()

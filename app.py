@@ -92,6 +92,11 @@ def models_for_station():
 
 
 def choice_caption():
+    active = st.session_state.get(f'active_{station}')
+    if active is not None:
+        if active.meta['kind'] == 'local':
+            return f"Your updated local-only model · {active.meta['rounds'][0]} rounds · fitted through {active.meta.get('fitted_through_utc', 'the supplied target record')}"
+        return f"Your adapted model · source: {name(active.meta['source_id'])} · {active.meta['rounds'][0]} total rounds · fitted through {active.meta.get('fitted_through_utc', 'the supplied target record')}"
     choice = json.loads((DATA / f'{year}_{station}_choices.json').read_text())
     return f"Paper selection · {year} target record · source: {name(choice['adapted']['source_id'])} · {choice['adapted']['rounds']} added rounds"
 
@@ -217,6 +222,12 @@ def forecast_page():
                  else 'The two short-record strategies agree on which sampled leads exceed the review threshold.')
         st.write(f"Active model: **{selected}**. Forecast origin: **{datetime.fromtimestamp(feed['origin'], timezone.utc):%d %b %Y %H:%M} UTC**.")
         st.caption(f"Generated {datetime.fromtimestamp(feed['fetched_at'], timezone.utc):%H:%M} UTC · {len(current.features)} predictors · model {current.meta['id']}")
+        if not current.meta['id'].startswith(('user_', 'live_')):
+            historical = table('test_metrics.csv')
+            code = 'validation_selected_adaptation' if selected == 'Adapted' else 'validation_selected_local'
+            if selected in ('Adapted', 'Local-only'):
+                hist = historical[(historical.target_id == station) & (historical.target_year == year) & (historical.strategy == code)]
+                st.caption(f'Historical evidence for this packaged model: overall RMSE {hist.rmse_m.mean():.3f} m; high-surge RMSE {hist.extreme_rmse_m.mean():.3f} m; warning F1 {hist.event_f1.mean():.3f}. These summarize the independent historical test, not a confidence interval for this forecast.')
     st.subheader('Water-level planning table')
     st.dataframe(frame, hide_index=True, width='stretch', column_config={
         'lead_h': 'Lead (h)', 'valid_time_utc': 'Valid time (UTC)',
@@ -361,6 +372,7 @@ def update_page():
         winner = 'Adapted' if b['rmse_m'] < a['rmse_m'] else 'Local-only'
         st.info(f"{winner} had the lower overall validation RMSE. The selected source was {name(b['candidate'])}, with {b['rounds']} added rounds. Review high-surge error and threshold-warning F1 alongside overall error before choosing an active strategy.")
         st.caption('These validation scores selected the candidates. Independent future verification is available in Verify & monitor; these values are not the paper’s held-out test performance.')
+        st.caption('For this new fitting exercise, high-surge validation thresholds come only from the inner training targets. No validation or future test observations set the thresholds.')
         candidates = pd.DataFrame(report['candidate_records'])
         st.dataframe(candidates.drop(columns=['lead_rmse_m', 'high_surge_rmse_by_lead', 'high_surge_counts']), hide_index=True)
         a1, a2, a3 = st.columns(3)
@@ -369,7 +381,7 @@ def update_page():
         a3.download_button('Download update audit', json.dumps(report, indent=2), 'STARX_update_audit.json', 'application/json')
         deployment = st.radio('Use in this session', ['Adapted', 'Local-only'], horizontal=True)
         if st.button('Activate selected model for this station'):
-            previous = models_for_station()['Adapted']
+            previous = models_for_station()[st.session_state.get(f'active_strategy_{station}', 'Adapted')]
             st.session_state.previous_models[station] = previous
             st.session_state[f'active_{station}'] = adapted if deployment == 'Adapted' else local
             st.session_state[f'active_strategy_{station}'] = deployment
@@ -386,7 +398,7 @@ def update_page():
                 raise ValueError('The saved target station does not match the selected station.')
             if restored.meta['kind'] not in ('adapted', 'local'):
                 raise ValueError('Restore a target-fitted adapted or local-only model for deployment.')
-            st.session_state.previous_models[station] = models_for_station()['Adapted']
+            st.session_state.previous_models[station] = models_for_station()[st.session_state.get(f'active_strategy_{station}', 'Adapted')]
             st.session_state[f'active_{station}'] = restored
             st.session_state[f'active_strategy_{station}'] = 'Local-only' if restored.meta['kind'] == 'local' else 'Adapted'
             st.success('Saved model restored for this session.')
@@ -462,10 +474,13 @@ def monitor_page():
         st.success(report['reason']) if report['accepted'] else st.info(report['reason'])
         st.json(report, expanded=False)
     if station in st.session_state.previous_models and st.button('Roll back to the previous model'):
-        st.session_state[f'active_{station}'] = st.session_state.previous_models.pop(station)
+        previous = st.session_state.previous_models.pop(station)
+        st.session_state[f'active_{station}'] = previous
+        st.session_state[f'active_strategy_{station}'] = 'Local-only' if previous.meta['kind'] == 'local' else 'Adapted'
         st.success('Previous model restored. The audit history is retained.')
     st.subheader('Preserve or restore your workspace')
-    st.download_button('Download model + monitoring checkpoint', checkpoint(active, st.session_state.ledger, st.session_state.update_audits),
+    current_active = models_for_station()[st.session_state.get(f'active_strategy_{station}', 'Adapted')]
+    st.download_button('Download model + monitoring checkpoint', checkpoint(current_active, st.session_state.ledger, st.session_state.update_audits),
                        f'STARX_{station}_checkpoint.zip', 'application/zip')
     up = st.file_uploader('Restore a STARX checkpoint', type=['zip'], key='checkpoint_restore')
     if up and st.button('Restore checkpoint'):

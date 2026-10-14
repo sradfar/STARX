@@ -66,8 +66,9 @@ STARX constructs the complete feature and target windows without interpolation.
 
 For already prepared examples, input CSV columns are `t0` in UTC, the ordered 487 predictor names listed in
 `assets/schema.json`, and observed `surge_6h`, `surge_12h`, `surge_24h`,
-`surge_48h`, `surge_72h`. Optional sample weights are retained in the example
-record. Complete input histories and future targets must be available within
+`surge_48h`, `surge_72h`. Supplied sample weights are normalized within the fitting
+subset. Otherwise the paper's capped exponential peak-surge weights are generated
+from the training targets. Complete input histories and future targets must be available within
 the chosen fitting budget. A real 3,000-origin Boston training-year example is
 included; it is not the full-year paper experiment.
 
