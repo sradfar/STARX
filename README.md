@@ -118,6 +118,7 @@ not needed for public deployment.
 
 ## Attribution
 
-Research and software: Soheil Radfar and Ning Lin, Princeton University.
+Developer: Dr. Soheil Radfar.
+Research: Soheil Radfar and Ning Lin, Princeton University.
 Data: NOAA CO-OPS and GFS through Open-Meteo (CC BY 4.0 attribution applies to
 Open-Meteo weather data). Third-party packages retain their respective licenses.

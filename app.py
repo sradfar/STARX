@@ -20,21 +20,13 @@ from starx.feeds import collect
 from starx.monitor import issue, verify, completed_frame, checkpoint, restore
 from starx.features import hourly_to_training, TEMPLATE
 
-st.set_page_config(page_title='STARX · Coastal decision support', page_icon='🌊', layout='wide')
+st.set_page_config(page_title='STARX · Coastal decision support', page_icon=str(ROOT/'assets/brand/starx-mark.svg'), layout='wide')
 DATA = ROOT / 'assets/data'
-COLORS = {'Adapted': '#147D92', 'Local-only': '#D17839', 'Long-record local': '#596B7B', 'Zero-shot reference': '#9F6A97'}
+COLORS = {'Adapted': '#0f8076', 'Local-only': '#d66545', 'Long-record local': '#17302d', 'Zero-shot reference': '#7b68a6'}
 LABELS = {'validation_selected_adaptation': 'Adapted', 'validation_selected_local': 'Local-only',
           'source_candidate_adaptation': 'Source-candidate adapted', 'full_local': 'Long-record local', 'zero_shot': 'Zero-shot reference'}
 
-st.markdown('''<style>
-.block-container {padding-top:1.7rem; padding-bottom:3rem; max-width:1500px}
-h1 {font-size:2.55rem!important; letter-spacing:-.055rem}
-h2 {font-size:1.6rem!important; margin-top:.8rem}
-[data-testid="stMetric"] {background:white; border:1px solid #DCE5EB; border-radius:12px; padding:15px}
-[data-testid="stSidebar"] {border-right:1px solid #DCE5EB}
-.eyebrow {font-size:.8rem; color:#157A86; font-weight:700; letter-spacing:.12rem}
-.intro {font-size:1.06rem; color:#557080; max-width:900px}
-</style>''', unsafe_allow_html=True)
+st.markdown('<style>'+(ROOT/'assets/brand/starx.css').read_text()+'</style>', unsafe_allow_html=True)
 
 
 @st.cache_data
@@ -66,9 +58,9 @@ def name(sid):
 
 
 def plot(fig, key=None):
-    fig.update_layout(template='plotly_white', font=dict(family='Arial', size=14, color='#173347'),
+    fig.update_layout(template='plotly_white', font=dict(family='Arial', size=14, color='#17302d'),
                       margin=dict(l=55, r=20, t=85, b=60), legend_title_text='',
-                      paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='white',
+                      paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='#fbfaf6',
                       legend=dict(orientation='h', y=1.03, yanchor='bottom', x=0, xanchor='left'))
     st.plotly_chart(fig, width='stretch', key=key)
 
@@ -109,25 +101,41 @@ st.session_state.setdefault('ledger', [])
 st.session_state.setdefault('update_audits', [])
 st.session_state.setdefault('previous_models', {})
 
-with st.sidebar:
-    st.markdown('## 🌊 STARX')
-    st.caption('Storm-surge Transfer and Adaptation with Response eXplainability')
-    page = st.radio('Workspace', ['Forecast & insights', 'Transfer explorer', 'Update models',
-                                'Verify & monitor', 'Explain forecasts', 'Paper evidence', 'Methods & downloads'], key='workspace')
-    st.divider()
-    station = st.selectbox('Target station', list(STATIONS), format_func=name)
-    year = st.selectbox('Paper target record', [2016, 2018], help='Selects the published, validation-selected model set. Your session updates remain separate.')
-    st.caption(f'NOAA {station} · {STATIONS[station]["coast"]} Coast')
-    if f'active_{station}' in st.session_state:
-        st.success('Your updated model is active for this station.')
-    st.divider()
-    st.caption('Inputs: NOAA observations and tides · GFS atmospheric forecasts. All times UTC; water levels in meters MLLW.')
-    st.caption('Decision support for model evaluation and forecast review. Local flood decisions should also use official bulletins and site-specific thresholds.')
+st.markdown('''<div class="brandbar"><div class="brand"><span class="brand-mark"><i></i>S</span>
+<span><b>STARX</b><small>Explainable coastal digital twin</small></span></div>
+<span class="developer">Developer: Dr. Soheil Radfar</span></div>''', unsafe_allow_html=True)
+NAV = {'Forecast & insights': 'Live twin', 'Transfer explorer': 'Transfer explorer',
+       'Update models': 'Adaptation studio', 'Verify & monitor': 'Model monitor',
+       'Explain forecasts': 'Explanation studio', 'Paper evidence': 'Paper evidence',
+       'Methods & downloads': 'Methods & downloads'}
+page = st.radio('Workspace', list(NAV), format_func=NAV.get, horizontal=True,
+                label_visibility='collapsed', key='workspace')
+hero, controls = st.columns([1.35, 1], gap='large', vertical_alignment='center')
+with hero:
+    if page == 'Forecast & insights':
+        st.markdown('''<div class="eyebrow">TRANSFERABILITY · EXPLAINABILITY · LOCAL LEARNING</div>
+<div class="hero-title">A beacon for<br><em>coastal insight.</em></div>
+<p class="hero-text">Live coastal forecasts. Explainable model transfer.<br>Local learning guided by evidence.</p>
+<div class="hero-stats"><div><b>6</b><span>study gauges</span></div><div><b>5</b><span>forecast horizons</span></div><div><b>30</b><span>directed transfers</span></div></div>''', unsafe_allow_html=True)
+    else:
+        st.markdown('<div class="eyebrow">STARX · COASTAL INSIGHT</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="hero-text">{NAV[page]}<br>Select a station to explore its models and evidence.</div>', unsafe_allow_html=True)
+with controls:
+    with st.container(key='station_controls'):
+        st.markdown('### Your coastal station')
+        station = st.selectbox('Target station', list(STATIONS), format_func=name)
+        year = st.selectbox('Paper target record', [2016, 2018], help='Published model set. Session updates are tracked separately.')
+        st.caption(f'NOAA {station} · {STATIONS[station]["coast"]} Coast')
+        if f'active_{station}' in st.session_state:
+            st.success('Your updated model is active.')
+        st.caption('NOAA observations & tides · GFS forecasts')
+        st.caption('Times: UTC · Water levels: meters MLLW')
+st.divider()
 
 
 def forecast_page():
     st.markdown('<div class="eyebrow">OBSERVE → FORECAST → REVIEW</div>', unsafe_allow_html=True)
-    st.title('Coastal outlook')
+    st.header('What is happening at the coast now?')
     st.markdown('<div class="intro">See when elevated surge is forecast, compare model strategies, and carry the evidence into your planning discussion.</div>', unsafe_allow_html=True)
     st.caption(choice_caption())
     a, b = st.columns([1, 3])
@@ -288,13 +296,15 @@ def transfer_page():
     selected = bool(route.chosen_for_deployment.iloc[0])
     st.info(f"This source used {int(route.selected_rounds.iloc[0])} added rounds selected within 2016. " +
             ('It was the target-validation-selected deployment source.' if selected else 'It is a route diagnostic; another source had the lowest target validation RMSE.'))
-    st.caption('Route diagnostics use the 2016 target record. The sidebar year controls deployed models and the separate paper-evidence comparisons.')
+    st.caption('Route diagnostics: 2016 target record. The year selector controls deployed models and paper-evidence comparisons.')
     diagnostics = table('pair_diagnostics_summary.csv')
     r = diagnostics[(diagnostics.target_id == station) & (diagnostics.source_id == sid)].iloc[0]
     reverse = diagnostics[(diagnostics.target_id == sid) & (diagnostics.source_id == station)].iloc[0]
     st.subheader('Why the route deserves local evaluation')
-    st.write(f"The environmental distance is **{r.domain_distance:.3f}** in both directions, but the RMSE penalties are **{r.penalty:.3f} m** for this route and **{reverse.penalty:.3f} m** in reverse. Environmental similarity alone does not select a reliable source.")
-    st.write(f"Mean attribution mismatch changes from **{r.zero_shot_tv_distance:.3f}** to **{r.adapted_tv_distance:.3f}** after updating. This describes fitted-model behavior; source selection uses target validation error.")
+    st.markdown(f'''- **Environmental distance:** {r.domain_distance:.3f} in both directions.
+- **RMSE penalty:** {r.penalty:.3f} m on this route; {reverse.penalty:.3f} m in reverse.
+- **Attribution mismatch:** {r.zero_shot_tv_distance:.3f} before updating → {r.adapted_tv_distance:.3f} after updating.''')
+    st.caption('Choose sources using target validation. Environmental similarity and attribution are diagnostics.')
     st.dataframe(series[['label', 'lead_time_h', 'rmse_m', 'extreme_rmse_m', 'event_f1']], hide_index=True,
                  column_config={'extreme_rmse_m': 'High-surge RMSE (m)', 'event_f1': 'Threshold-warning F1'})
     download_csv(series, 'Download route metrics', f'STARX_{sid}_to_{station}.csv', 'route_csv')
@@ -305,8 +315,14 @@ def update_page():
     st.title('Update models with local observations')
     st.write('Fit the paper’s two short-record strategies using the same target observations. Source trees and scalers are retained during adaptation; local-only models learn their scalers from their training subset.')
     with st.expander('Required data and selection procedure', expanded=False):
-        st.write('Upload hourly surge, tide and atmospheric data and let STARX construct the predictors, or upload prepared forecast origins with 487 predictors and five observed future surge targets. The app retains complete 24-hour histories and 72-hour target windows inside the fitting budget. Training targets end before the validation boundary, giving a 72-hour purge. The lowest mean validation RMSE across five leads selects each strategy. Selected models are then refitted on the full target budget.')
-        st.write('Local search: three configurations × 200/400/600 rounds. Adaptation search: the other five sources × 25/50/100 added rounds. Uploaded data stay within your app session; the shared paper models are unchanged.')
+        st.markdown('''- **Upload:** hourly surge, tide and atmospheric data, or 487 prepared predictors and five observed targets.
+- **Complete windows:** 24-hour history and 72-hour targets inside the fitting budget.
+- **Separation:** training targets end before validation; 72-hour purge.
+- **Selection:** lowest mean validation RMSE across five leads.
+- **Final fit:** refit each selected strategy on the full target budget.
+- **Local search:** 3 configurations × 200 / 400 / 600 rounds.
+- **Adaptation search:** 5 sources × 25 / 50 / 100 added rounds.''')
+        st.caption('Uploads stay in your session. Shared paper models remain unchanged.')
     c1, c2, c3 = st.columns(3)
     c1.download_button('Download predictor schema', (ROOT/'assets/schema.json').read_bytes(), 'STARX_schema.json', 'application/json')
     c2.download_button('Download real training example', (DATA/'example_boston_2016.csv.gz').read_bytes(), 'Boston_2016_example.csv.gz', 'application/gzip')
@@ -370,7 +386,8 @@ def update_page():
         cols[1].metric('Adapted validation RMSE', f'{b["rmse_m"]:.3f} m')
         cols[2].metric('Adaptation validation gain', f'{100*(1-b["rmse_m"]/a["rmse_m"]):.1f}%')
         winner = 'Adapted' if b['rmse_m'] < a['rmse_m'] else 'Local-only'
-        st.info(f"{winner} had the lower overall validation RMSE. The selected source was {name(b['candidate'])}, with {b['rounds']} added rounds. Review high-surge error and threshold-warning F1 alongside overall error before choosing an active strategy.")
+        st.info(f"Lower validation RMSE: {winner}. Selected source: {name(b['candidate'])} · {b['rounds']} added rounds.")
+        st.caption('Before activation: compare high-surge RMSE and warning F1 alongside overall RMSE.')
         st.caption('These validation scores selected the candidates. Independent future verification is available in Verify & monitor; these values are not the paper’s held-out test performance.')
         st.caption('For this new fitting exercise, high-surge validation thresholds come only from the inner training targets. No validation or future test observations set the thresholds.')
         candidates = pd.DataFrame(report['candidate_records'])
@@ -408,8 +425,8 @@ def update_page():
 
 def monitor_page():
     st.title('Verify forecasts and manage updates')
-    st.write('Forecasts issued in your session are stored with their exact inputs, model version, origin and issuance time. Subsequent NOAA observations verify predictions after all five leads have matured.')
-    st.info('Free hosting runs while the app is active. This session does not collect forecasts while it is asleep. Save a checkpoint to retain your models and verification record between visits.')
+    st.caption('Each forecast records its inputs, model version and issue time. NOAA observations verify all five leads once complete.')
+    st.info('Collection runs while the app is active. Save a checkpoint before leaving.')
     strategies = models_for_station()
     active_strategy = st.session_state.get(f'active_strategy_{station}', 'Adapted')
     active = strategies[active_strategy]
@@ -445,7 +462,15 @@ def monitor_page():
     else:
         st.caption('Verification begins when previously issued forecasts reach their valid times. Historical observations are never relabeled as forecasts issued by this session.')
     st.subheader('Check whether updating is supported')
-    st.write('At least 2,000 unique completed origins are required. Continuation length is selected on chronological validation; a second, untouched block tests acceptance. High-surge RMSE must improve by ≥1%, overall RMSE may increase by at most 0.5%, and normal-condition RMSE by at most 1%. At least five high-surge observations per lead are required.')
+    st.markdown('''<div class="criteria">
+<div><small>Minimum record</small><b>2,000 completed origins</b></div>
+<div><small>High-surge coverage</small><b>≥5 observations per lead</b></div>
+<div><small>High-surge RMSE</small><b>≥1% improvement</b></div>
+<div><small>Overall RMSE</small><b>≤0.5% increase</b></div>
+<div><small>Normal-condition RMSE</small><b>≤1% increase</b></div>
+<div><small>Acceptance check</small><b>Untouched chronological block</b></div>
+</div>''', unsafe_allow_html=True)
+    st.caption('Select continuation length on chronological validation. Check acceptance on a separate, untouched block.')
     last_consumed = st.session_state.get(f'consumed_{station}')
     fresh = unique if last_consumed is None or unique.empty else unique[unique.t0 > pd.Timestamp(last_consumed)]
     if st.button('Evaluate a monitored update', disabled=len(fresh) < 2000):
@@ -610,25 +635,76 @@ def methods_page():
     st.write('STARX connects coastal observations, forecasting models, short-record updating, verification, and explanation in one workflow.')
     st.graphviz_chart('''digraph STARX {rankdir=LR; graph [bgcolor="transparent"]; node [shape=box,style="rounded,filled",fillcolor="#E6F2F4",fontname="Arial"]; "NOAA observations\nand tides" -> "Complete 487-predictor\nforecast window"; "GFS wind\nand pressure" -> "Complete 487-predictor\nforecast window"; "Complete 487-predictor\nforecast window" -> "Selected local or\nadapted XGBoost model"; "Selected local or\nadapted XGBoost model" -> "6–72 h forecasts\nthreshold review"; "Issued forecasts +\nnew observations" -> "Verification and\nupdate evaluation"; "Verification and\nupdate evaluation" -> "Selected local or\nadapted XGBoost model"; "Selected local or\nadapted XGBoost model" -> "SHAP and\nmodel comparison";}''')
     with st.expander('Forecast inputs and outputs', expanded=True):
-        st.write('Each example uses observed surge and atmospheric history from t−24 h through t, future wind speed/direction and pressure from t+1 through t+72 h, astronomical tide, and cyclic month predictors: 487 inputs. Five direct XGBoost regressors predict surge at +6, +12, +24, +48 and +72 h. Live atmospheric forcing is GFS. Water-level and tide values use MLLW; all timestamps are UTC.')
-        st.write('NOAA history uses hourly means from ten quality-controlled six-minute observations, less predicted astronomical tide. Missing or flagged windows block forecasting. Meteorological wind direction is converted to the training vector convention.')
+        st.markdown('''- **487 inputs:** surge and atmospheric history, future forcing, tide and cyclic month.
+- **History:** t−24 h through t.
+- **Future forcing:** GFS wind speed, direction and pressure at t+1 through t+72 h.
+- **Outputs:** five direct XGBoost regressors; surge at +6 / +12 / +24 / +48 / +72 h.
+- **Units:** meters MLLW for water level and tide; UTC timestamps.
+- **NOAA surge:** hourly mean of ten quality-controlled six-minute observations, minus predicted tide.
+- **Quality checks:** missing or flagged windows block forecasting.
+- **Wind convention:** meteorological direction converted to the training vector convention.''')
     with st.expander('Four deployment strategies and model selection'):
-        st.write('Long-record local: fitted on the target’s 2000–2015 record. Zero-shot: a source model evaluated at a different station, included only as a transfer baseline. Local-only: fitted from scratch on the target record. Adapted: retains the source trees and scalers and adds target-trained trees.')
-        st.write('For each 2016 or 2018 target year, January–September origins train candidates whose targets end before October. October–December origins validate complete target windows. The lowest average validation RMSE across all five leads selects a local configuration/tree count or source/continuation length. Both selected strategies are refitted on identical full-year target examples: 8,688 in 2016 and 8,664 in 2018. Independent testing uses 52,536 origins in 2020–2025 per station.')
-        st.write('Sources have 600 rounds, depth 6, learning rate 0.04, row/column sampling 0.8/0.7, minimum child weight 5, L1/L2 regularization 0.1/1.0 and seed 42. Local candidates use the three documented configurations at 200/400/600 rounds; adaptation uses 25/50/100 added rounds for each of the five other sources.')
+        st.markdown('''| Strategy | Training |
+|---|---|
+| Long-record local | Target station, 2000–2015 |
+| Zero-shot reference | Source model at another station; baseline only |
+| Local-only | New model fitted on the target record |
+| Adapted | Source trees and scalers retained; target-trained trees added |
+
+**Chronological selection · repeated independently for 2016 and 2018**
+
+1. Train on January–September origins; targets end before October.
+2. Validate on October–December origins with complete target windows.
+3. Select lowest mean validation RMSE across five leads.
+4. Refit both strategies on identical full-year examples.
+5. Test independently on 2020–2025 observations.
+
+- **Full-year origins:** 8,688 (2016); 8,664 (2018).
+- **Test origins:** 52,536 per station.
+- **Source settings:** 600 rounds; depth 6; learning rate 0.04.
+- **Sampling:** rows 0.8; columns 0.7.
+- **Regularization:** minimum child weight 5; L1 0.1; L2 1.0; seed 42.
+- **Local search:** 3 configurations × 200 / 400 / 600 rounds.
+- **Adaptation search:** 5 other sources × 25 / 50 / 100 added rounds.''')
     with st.expander('Objective and evaluation metrics'):
         st.latex(r'L=0.5\rho_{0.8}(e)+0.5|0.7-\mathbf{1}(e<0)|e^2,\quad e=y-\hat y')
-        st.write('The weighted quantile–quadratic objective penalizes underprediction asymmetrically. Metrics include overall RMSE, MAE, signed bias, high-surge RMSE, threshold precision/recall/F1, skill against persistence, episode peak amplitude and timing errors, and computational cost.')
+        st.caption('Weighted quantile–quadratic loss: asymmetric penalty for underprediction.')
+        st.markdown('''- **Overall accuracy:** RMSE, MAE and signed bias.
+- **High-surge accuracy:** RMSE above the surge threshold.
+- **Warnings:** precision, recall and F1.
+- **Other checks:** persistence skill, episode peak amplitude and timing, computational cost.''')
         st.latex(r'\mathrm{Gain}(\%)=100\frac{\mathrm{RMSE}_{\mathrm{local}}-\mathrm{RMSE}_{\mathrm{adapted}}}{\mathrm{RMSE}_{\mathrm{local}}}')
         st.latex(r'\mathrm{TSR}=\frac{1-(E_{\mathrm{transfer}}/E_{\mathrm{persistence}})^2}{1-(E_{\mathrm{local}}/E_{\mathrm{persistence}})^2}')
         st.caption('TSR follows the saved paper definition; see the downloadable metric documentation for its precise interpretation.')
-        st.write('High-surge RMSE evaluates observed hourly targets at or above the pre-2020 station/lead 95th percentile. An exceedance at any of five forecast leads is not an independent storm. Episode metrics use a separate observed-episode definition.')
+        st.markdown('''- **High-surge threshold:** pre-2020 station/lead 95th percentile; observed targets ≥ threshold.
+- **Storm counting:** overlapping exceedance windows are not independent storms.
+- **Episode metrics:** use the separate observed-episode definition.''')
     with st.expander('Attribution, environmental separation and geographic experiments'):
-        st.write('Exact tree-path-dependent TreeSHAP decomposes predictions into a reference and additive contributions. Nine physical groups are used. Long-record profiles use 25,000 inputs; transfer comparisons use a common subset of 5,000 target inputs. Contributions are converted to meters using each model’s target scale. Total-variation distance between normalized profiles quantifies attribution mismatch.')
-        st.write('Environmental distance summarizes differences in the mean and variability of the paper’s atmospheric, surge and tidal inputs. It is symmetric; directional performance need not be. Pooled geographic experiments examine tidal and coastal descriptors separately from the six-gauge transfer-selection experiment. Downloadable evidence retains these distinctions.')
+        st.markdown('''- **Explanation:** exact tree-path-dependent TreeSHAP; reference + additive contributions.
+- **Physical grouping:** nine predictor groups.
+- **Long-record profiles:** 25,000 inputs per station.
+- **Transfer comparisons:** common subset of 5,000 target inputs.
+- **Contribution units:** meters, using each model’s target scale.
+- **Attribution mismatch:** total-variation distance between normalized profiles.
+- **Environmental distance:** differences in input means and variability; atmospheric, surge and tidal inputs.
+- **Direction matters:** environmental distance is symmetric; transfer performance can differ.
+- **Geographic experiments:** separate pooled tests of tidal and coastal descriptors.''')
     with st.expander('Model updating and free-hosting behavior'):
-        st.write('Target-record updating selects among candidate sources and continuation lengths. Monitored continuation uses only completed issued forecasts, two chronological purges, a validation block for choosing 25/50/100 added rounds, and an untouched acceptance block. Accepted models retain their tested trees; no refit on the acceptance block is performed. Rollback restores the previous session model.')
-        st.write('Each visitor’s uploads, updated models and forecast ledger are isolated in that session. The app does not promise collection while Community Cloud sleeps. Downloadable model and workspace checkpoints preserve your work; restore them on a later visit. Shared packaged paper models and scientific results are read-only.')
+        st.markdown('''**Monitored updates**
+
+- Use completed, previously issued forecasts only.
+- Separate training, validation and acceptance with two chronological purges.
+- Select 25 / 50 / 100 added rounds on validation.
+- Check the selected candidate on untouched acceptance data.
+- Keep the tested trees; do not refit on acceptance data.
+- Roll back to the previous session model when needed.
+
+**Your session**
+
+- Uploads, updated models and forecast records stay in your session.
+- Collection pauses when Community Cloud sleeps.
+- Download a checkpoint; restore it on your next visit.
+- Shared paper models and results are read-only.''')
     st.subheader('Download the evidence')
     files = ['aggregate_performance.csv', 'test_metrics.csv', 'validation_candidates.csv', 'source_audit.json',
              'candidate_metrics.csv', 'shap_alignment.csv', 'domain_distance.csv', 'budget_summary.csv',
@@ -644,4 +720,5 @@ PAGES = {'Forecast & insights': forecast_page, 'Transfer explorer': transfer_pag
          'Methods & downloads': methods_page}
 PAGES[page]()
 st.divider()
-st.caption('STARX · Princeton University research · Soheil Radfar & Ning Lin · Open model evaluation and coastal forecast decision support')
+st.caption('STARX · Explainable coastal digital twin · Developer: Dr. Soheil Radfar')
+st.caption('Decision support for forecast review. Consult official bulletins and local thresholds for flood decisions.')

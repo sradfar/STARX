@@ -10,7 +10,7 @@ paths = [APP/name for name in ['app.py', 'requirements.txt', 'README.md', 'DEPLO
 for directory in ['starx', 'assets', 'tests', 'tools', '.streamlit', '.github']:
     paths += [p for p in (APP/directory).rglob('*') if p.is_file() and '__pycache__' not in p.parts and not p.name.endswith('.pyc')]
 paths = [p for p in paths if p.name != 'secrets.toml']
-allowed_extensions = {'.py', '.json', '.csv', '.gz', '.ubj', '.png', '.jpg', '.txt', '.md', '.toml', '.yml', ''}
+allowed_extensions = {'.py', '.json', '.csv', '.gz', '.ubj', '.png', '.jpg', '.svg', '.css', '.txt', '.md', '.toml', '.yml', ''}
 for path in paths:
     assert path.suffix in allowed_extensions, path
     assert not any(x in path.parts for x in ['.venv', '.runtime', 'runtime', 'test-output']), path

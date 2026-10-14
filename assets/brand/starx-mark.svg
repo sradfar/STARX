@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+<ellipse cx="32" cy="32" rx="29" ry="28" fill="none" stroke="#0f8076" stroke-width="1" transform="rotate(35 32 32)"/>
+<path d="M32 8C46 8 56 17 56 32C56 46 46 56 31 55C17 54 8 46 8 31C8 17 18 8 32 8Z" fill="#17302d"/>
+<text x="31" y="44" text-anchor="middle" font-family="Georgia,serif" font-size="37" font-weight="700" font-style="italic" fill="#fbfaf6">S</text>
+</svg>
