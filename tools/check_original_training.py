@@ -12,7 +12,7 @@ APP = Path(__file__).resolve().parents[1]
 WORK = APP.parent
 sys.path.insert(0, str(APP))
 sys.path.insert(0, str(WORK))
-from transferability_common_v1 import install_pickle_compatibility_classes, predict_bundle, load_config
+from transferability_common_v1 import install_pickle_compatibility_classes, predict_bundle, load_config, normalized_sample_weights
 from transferability_02_low_data_adaptation_v1 import adapt_source_bundle
 from starx.models import load_model
 from starx.adaptation import fit_model, read_training_csv
@@ -33,8 +33,9 @@ for estimator in original['model'].estimators_:
     b = estimator.get_booster()
     b.set_param({'seed': 0, 'random_state': 0, 'nthread': 2})
     b.predict(xgb.DMatrix(original['scaler'].transform_X(X[:1])))
-paper = adapt_source_bundle(original, X, y, None, cfg)
-paper_repeat = adapt_source_bundle(original, X, y, None, cfg)
+weights = normalized_sample_weights(small)
+paper = adapt_source_bundle(original, X, y, weights, cfg)
+paper_repeat = adapt_source_bundle(original, X, y, weights, cfg)
 portable = fit_model(schema, small, 3, source=source)
 portable_repeat = fit_model(schema, small, 3, source=source)
 Xt = frame[schema['features']].iloc[500:550].to_numpy(np.float32)

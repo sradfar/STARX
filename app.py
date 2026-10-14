@@ -67,9 +67,9 @@ def name(sid):
 
 def plot(fig, key=None):
     fig.update_layout(template='plotly_white', font=dict(family='Arial', size=14, color='#173347'),
-                      margin=dict(l=12, r=20, t=35, b=20), legend_title_text='',
+                      margin=dict(l=55, r=20, t=85, b=60), legend_title_text='',
                       paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='white',
-                      legend=dict(orientation='h', y=-.22, x=0))
+                      legend=dict(orientation='h', y=1.03, yanchor='bottom', x=0, xanchor='left'))
     st.plotly_chart(fig, width='stretch', key=key)
 
 
@@ -209,7 +209,7 @@ def forecast_page():
                             line=dict(color=COLORS[label], width=3 if label == selected else 1.4,
                                       dash='dot' if label == 'Zero-shot reference' else 'solid'))
         fig.add_scatter(x=frame.valid_time_utc, y=thresholds, name='Review threshold', mode='lines', line=dict(color='#B64A40', dash='dash'))
-        fig.update_layout(yaxis_title='Storm-surge residual (m)', xaxis_title='Forecast valid time (UTC)', height=390)
+        fig.update_layout(yaxis_title='Storm-surge residual (m)', xaxis_title='Forecast valid time (UTC)', height=430)
         plot(fig)
         st.caption('¹ Maximum across the five evaluated leads, not an estimate of the exact event peak. Lines connect discrete lead predictions. Model spread is not a calibrated probability interval.')
     with right:

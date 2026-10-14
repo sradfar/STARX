@@ -21,6 +21,7 @@ with zipfile.ZipFile(DEST, 'w', zipfile.ZIP_DEFLATED, compresslevel=6) as z:
 report = dict(archive=str(DEST), files=len(paths), archive_mb=round(DEST.stat().st_size/1e6, 1),
               maximum_file_mb=round(max(p.stat().st_size for p in paths)/1e6, 1),
               sha256=hashlib.sha256(DEST.read_bytes()).hexdigest(),
-              source_models=30, excludes='manuscripts, credentials, environments, session runtime and test outputs')
+              model_sets=30, source_model_sets=6, selected_local_model_sets=12, selected_adapted_model_sets=12,
+              excludes='manuscripts, credentials, environments, session runtime and test outputs')
 (APP/'test-output/package_verification.json').write_text(json.dumps(report, indent=2))
 print(json.dumps(report, indent=2))
