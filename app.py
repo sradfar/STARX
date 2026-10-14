@@ -114,7 +114,7 @@ hero, controls = st.columns([1.35, 1], gap='large', vertical_alignment='center')
 with hero:
     if page == 'Forecast & insights':
         st.markdown('''<div class="eyebrow">TRANSFERABILITY · EXPLAINABILITY · LOCAL LEARNING</div>
-<div class="hero-title">A beacon for<br><em>coastal insight.</em></div>
+<div class="hero-title">Coastal forecasting.<br><em>Local adaptation.</em></div>
 <p class="hero-text">Live coastal forecasts. Explainable model transfer.<br>Local learning guided by evidence.</p>
 <div class="hero-stats"><div><b>6</b><span>study gauges</span></div><div><b>5</b><span>forecast horizons</span></div><div><b>30</b><span>directed transfers</span></div></div>''', unsafe_allow_html=True)
     else:
@@ -197,10 +197,10 @@ def forecast_page():
     exceed = frame[frame.threshold_exceeded]
     age = (time.time()-feed['origin'])/3600
     cards = st.columns(4)
-    cards[0].metric('Current observed surge', f"{feed['residual'][feed['origin']]:.3f} m")
-    cards[1].metric('Largest predicted surge¹', f'{p.max():.3f} m', f'+{int(peak.lead_h)} h', delta_color='off')
+    cards[0].metric('Observed surge', f"{feed['residual'][feed['origin']]:.3f} m")
+    cards[1].metric('Forecast maximum¹', f'{p.max():.3f} m', f'+{int(peak.lead_h)} h', delta_color='off')
     cards[2].metric('Leads over threshold', f'{len(exceed)} / 5')
-    cards[3].metric('Observation origin age', f'{age:.1f} h')
+    cards[3].metric('Origin age', f'{age:.1f} h')
     if len(exceed):
         st.warning(f"Review elevated surge at {', '.join('+'+str(v)+' h' for v in exceed.lead_h)}. The earliest sampled exceedance is {exceed.iloc[0].valid_time_utc:%d %b %H:%M} UTC. Check local water-level guidance and official forecasts for the affected period.")
     else:
@@ -255,7 +255,7 @@ def forecast_page():
 def draw_station_map():
     df = pd.DataFrame([dict(station=name(s), lat=v['lat'], lon=v['lon'], coast=v['coast']) for s, v in STATIONS.items()])
     fig = px.scatter_geo(df, lat='lat', lon='lon', hover_name='station', color='coast',
-                         color_discrete_map={'East': '#157A86', 'Gulf': '#D17839'}, scope='usa')
+                         color_discrete_map={'East': '#0f8076', 'Gulf': '#d66545'}, scope='usa')
     fig.update_geos(projection_type='albers usa', fitbounds='locations', visible=False, showcountries=True, showsubunits=True, subunitcolor='#CAD6DF')
     fig.update_traces(marker_size=13)
     fig.update_layout(height=300)
@@ -556,7 +556,7 @@ def explain_page():
         df = df[(df.target_id == station) & (df.lead_time_h == h) & (df.strategy == 'full_local')]
         per = st.checkbox('Normalize importance by the number of predictors in each group')
         col = 'per_feature_mean_abs_shap_m' if per else 'grouped_signed_mean_abs_shap_m'
-        plot(px.bar(df.sort_values(col), x=col, y='group', orientation='h', labels={col: 'Mean absolute contribution (m)', 'group': ''}, color_discrete_sequence=['#157A86']))
+        plot(px.bar(df.sort_values(col), x=col, y='group', orientation='h', labels={col: 'Mean absolute contribution (m)', 'group': ''}, color_discrete_sequence=['#0f8076']))
         st.caption('Long-record local model, 25,000 fixed historical test inputs. The default sums signed contributions within each physical group before taking absolute values. Per-predictor sensitivity divides summed feature importance by group size.')
         alignment = table('shap_alignment.csv')
         subset = alignment[(alignment.target_id == station) & (alignment.lead_time_h == h)].copy()
