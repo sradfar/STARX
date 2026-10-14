@@ -2,7 +2,7 @@
 
 **Storm-surge Transfer and Adaptation with Response eXplainability**
 
-[Open STARX](https://starx-coastal.streamlit.app) · [Developer: Dr. Soheil Radfar](https://sradfar.github.io)
+[Open STARX](https://starx-twin.streamlit.app) · [Developer: Dr. Soheil Radfar](https://sradfar.github.io)
 
 An executable Streamlit application for the six-gauge study by Soheil Radfar and
 Ning Lin at Princeton University. The app runs the trained XGBoost models, uses
@@ -50,7 +50,7 @@ cached by station for five minutes.
 2. At https://share.streamlit.io choose **Create app → Deploy a public app from
    GitHub**, repository `sradfar/STARX`, branch `main`, entrypoint `app.py`.
 3. Choose Python **3.12** under Advanced settings. No secrets are required.
-4. Request an available application name, for example `starx-coastal`.
+4. Use the application name `starx-twin` for the existing deployment.
 5. Verify the public URL from a signed-out browser: live input retrieval,
    predictions, all workspaces, model updating and downloads.
 

@@ -45,6 +45,9 @@ button[kind="primary"] {background:var(--teal);border:1px solid var(--teal);bord
 button[kind="secondary"],button[kind="tertiary"] {border-color:var(--line);border-radius:3px}
 [data-testid="stAlert"] {border-radius:3px}
 [data-testid="stPlotlyChart"],[data-testid="stExpander"] {background:var(--paper-2);border:1px solid var(--line);border-radius:3px}
+.st-key-station_map [data-testid="stPlotlyChart"] {background:transparent;border:0;border-radius:0}
+.st-key-station_overview {padding-top:8px}
+@media(max-width:760px) {.st-key-station_overview > [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"] {flex-direction:column}.st-key-station_overview [data-testid="stColumn"] {width:100%;flex:1 1 100%}}
 .criteria {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:8px 0 18px}
 .criteria div {background:var(--paper-2);padding:14px 16px;border:1px solid var(--line);border-left:3px solid var(--teal)}
 .criteria small {display:block;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}

@@ -151,12 +151,16 @@ def forecast_page():
     feed = st.session_state.get(f'feed_{station}')
     if feed is None:
         st.info('Fetch current conditions to execute the trained models. No sample or simulated forecast is shown as live.')
-        draw_station_map()
-        st.subheader('What STARX helps you decide')
-        for heading, text in [('When to review conditions', 'Identify which forecast leads exceed the chosen surge threshold.'),
-                              ('Which model to use', 'Compare validation-selected adaptation against a local-only alternative.'),
-                              ('When to update', 'Verify issued forecasts and check new model candidates using separated observations.')]:
-            st.markdown(f'**{heading}.** {text}')
+        with st.container(key='station_overview'):
+            map_area, decisions = st.columns([1.1, 1], gap='large', vertical_alignment='center')
+            with map_area:
+                draw_station_map()
+            with decisions:
+                st.subheader('What STARX helps you decide')
+                for heading, text in [('When to review conditions', 'Identify which forecast leads exceed the chosen surge threshold.'),
+                                      ('Which model to use', 'Compare validation-selected adaptation against a local-only alternative.'),
+                                      ('When to update', 'Verify issued forecasts and check new model candidates using separated observations.')]:
+                    st.markdown(f'**{heading}.** {text}')
         return
     if auto:
         @st.fragment(run_every='5m')
@@ -256,10 +260,20 @@ def draw_station_map():
     df = pd.DataFrame([dict(station=name(s), lat=v['lat'], lon=v['lon'], coast=v['coast']) for s, v in STATIONS.items()])
     fig = px.scatter_geo(df, lat='lat', lon='lon', hover_name='station', color='coast',
                          color_discrete_map={'East': '#0f8076', 'Gulf': '#d66545'}, scope='usa')
-    fig.update_geos(projection_type='albers usa', fitbounds='locations', visible=False, showcountries=True, showsubunits=True, subunitcolor='#CAD6DF')
-    fig.update_traces(marker_size=13)
-    fig.update_layout(height=300)
-    plot(fig, 'network')
+    fig.update_geos(projection_type='albers usa', fitbounds=False, visible=False,
+                    showland=True, landcolor='#fbfaf6', bgcolor='rgba(0,0,0,0)',
+                    showcountries=True, countrycolor='#687975', showsubunits=True,
+                    subunitcolor='#d8ddd7')
+    fig.update_traces(marker_size=12, marker_line=dict(width=1.2, color='#fbfaf6'))
+    fig.update_layout(height=330, margin=dict(l=0, r=0, t=35, b=0),
+                      font=dict(family='Arial', size=13, color='#17302d'),
+                      paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)',
+                      legend_title_text='', dragmode=False,
+                      legend=dict(orientation='h', x=.5, xanchor='center',
+                                  y=1.03, yanchor='bottom', bgcolor='rgba(0,0,0,0)'))
+    with st.container(key='station_map'):
+        st.plotly_chart(fig, width='stretch', key='network',
+                        config=dict(displayModeBar=False, scrollZoom=False))
 
 
 def transfer_page():

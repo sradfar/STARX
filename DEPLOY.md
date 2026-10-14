@@ -2,7 +2,7 @@
 
 Repository: https://github.com/sradfar/STARX
 
-Streamlit URL: https://starx-coastal.streamlit.app
+Streamlit URL: https://starx-twin.streamlit.app
 
 ## Files are ready
 
@@ -38,7 +38,7 @@ At https://share.streamlit.io:
 3. Branch: **main**.
 4. Main file: **app.py**.
 5. Advanced settings → Python: **3.12**. No secrets are needed.
-6. Choose an available free subdomain, for example **starx-coastal**.
+6. Use **starx-twin** for the existing deployment.
 7. Select **Deploy** and wait for the dependencies and model assets to load.
 
 The domain is allocated only when Streamlit accepts the chosen name. No custom
