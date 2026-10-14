@@ -2,6 +2,8 @@
 
 **Storm-surge Transfer and Adaptation with Response eXplainability**
 
+[Open STARX](https://starx-coastal.streamlit.app) · [Developer: Dr. Soheil Radfar](https://sradfar.github.io)
+
 An executable Streamlit application for the six-gauge study by Soheil Radfar and
 Ning Lin at Princeton University. The app runs the trained XGBoost models, uses
 NOAA observations and tides with GFS forcing, compares transfer strategies, and
@@ -9,18 +11,18 @@ supports local updating and forecast verification.
 
 ## Included workspaces
 
-1. **Forecast & insights:** execute five forecast leads, review threshold
+1. **Live twin:** execute five forecast leads, review threshold
    exceedances and their valid times, compare models, inspect tide-plus-surge
    water levels, and download forecasts and a decision brief.
 2. **Transfer explorer:** all 30 directed routes, source/target RMSE matrix,
    before/after adaptation, local comparators, environmental separation and
    attribution mismatch.
-3. **Update models:** upload target observations; select from nine local and
+3. **Adaptation studio:** upload target observations; select from nine local and
    fifteen adaptation candidates with chronological validation and a 72-hour
    purge; refit, activate, and download the selected models and complete audit.
-4. **Verify & monitor:** preserve actual issued forecasts, verify matured NOAA
+4. **Model monitor:** preserve actual issued forecasts, verify matured NOAA
    outcomes, evaluate continued updates, roll back, and save/restore checkpoints.
-5. **Explain forecasts:** exact native TreeSHAP for executed forecasts and the
+5. **Explanation studio:** exact native TreeSHAP for executed forecasts and the
    paper's historical physical-group profiles.
 6. **Paper evidence:** the 2016/2018 comparisons, short-record budgets, observed
    storm episodes, retained-source case study, and computational measurements.

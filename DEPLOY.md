@@ -1,5 +1,9 @@
 # Publish STARX at no cost
 
+Repository: https://github.com/sradfar/STARX
+
+Streamlit URL: https://starx-coastal.streamlit.app
+
 ## Files are ready
 
 The deployable app is the `starx_streamlit` directory. The accompanying
@@ -45,7 +49,7 @@ domain purchase or paid compute selection is required.
 - Fetch current NOAA/GFS inputs at one station and execute all five leads.
 - Check the UTC origin/valid times, surge thresholds and total-water-level datum.
 - Open transfer diagnostics, historical SHAP profiles and paper evidence.
-- At **Update models**, select **Boston**, use the included real target-record
+- At **Adaptation studio**, select **Boston**, use the included real target-record
   example, and run candidate selection. Allow several minutes on free CPUs.
 - Download and restore the resulting model ZIP.
 - Download a forecast and decision brief; save a monitoring checkpoint.
