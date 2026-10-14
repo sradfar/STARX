@@ -15,6 +15,8 @@ p,li {line-height:1.55}
 .brand b {display:block;font:700 20px Georgia,serif;letter-spacing:.08em}
 .brand small {display:block;color:var(--muted);font-size:9px;letter-spacing:.12em;text-transform:uppercase;margin-top:3px}
 .developer {font-size:11px;color:var(--muted);text-align:right}
+.developer a {display:inline-block;color:var(--teal);text-decoration:none;margin-top:5px}
+.developer a:hover {text-decoration:underline}
 .eyebrow {font-size:10px;color:var(--teal);font-weight:600;letter-spacing:.15em;margin:12px 0}
 .hero-title {font:500 clamp(42px,5.5vw,78px)/.98 Georgia,serif;letter-spacing:-.055em;margin:24px 0}
 .hero-title em {color:var(--coral);font-weight:400}

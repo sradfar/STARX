@@ -103,7 +103,7 @@ st.session_state.setdefault('previous_models', {})
 
 st.markdown('''<div class="brandbar"><div class="brand"><span class="brand-mark"><i></i>S</span>
 <span><b>STARX</b><small>Explainable coastal digital twin</small></span></div>
-<span class="developer">Developer: Dr. Soheil Radfar</span></div>''', unsafe_allow_html=True)
+<span class="developer">Developer: Dr. Soheil Radfar<br><a href="https://sradfar.github.io" target="_blank" rel="noopener noreferrer">sradfar.github.io</a></span></div>''', unsafe_allow_html=True)
 NAV = {'Forecast & insights': 'Live twin', 'Transfer explorer': 'Transfer explorer',
        'Update models': 'Adaptation studio', 'Verify & monitor': 'Model monitor',
        'Explain forecasts': 'Explanation studio', 'Paper evidence': 'Paper evidence',
@@ -721,4 +721,5 @@ PAGES = {'Forecast & insights': forecast_page, 'Transfer explorer': transfer_pag
 PAGES[page]()
 st.divider()
 st.caption('STARX · Explainable coastal digital twin · Developer: Dr. Soheil Radfar')
+st.caption('[sradfar.github.io](https://sradfar.github.io)')
 st.caption('Decision support for forecast review. Consult official bulletins and local thresholds for flood decisions.')
