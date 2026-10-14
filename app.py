@@ -114,7 +114,7 @@ hero, controls = st.columns([1.35, 1], gap='large', vertical_alignment='center')
 with hero:
     if page == 'Forecast & insights':
         st.markdown('''<div class="eyebrow">TRANSFERABILITY · EXPLAINABILITY · LOCAL LEARNING</div>
-<div class="hero-title">Coastal forecasting.<br><em>Local adaptation.</em></div>
+<div class="hero-title">A beacon for<br><em>coastal insight.</em></div>
 <p class="hero-text">Live coastal forecasts. Explainable model transfer.<br>Local learning guided by evidence.</p>
 <div class="hero-stats"><div><b>6</b><span>study gauges</span></div><div><b>5</b><span>forecast horizons</span></div><div><b>30</b><span>directed transfers</span></div></div>''', unsafe_allow_html=True)
     else:
